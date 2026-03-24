@@ -1,12 +1,12 @@
-#ifndef AVLMAP_H
-#define AVLMAP_H
+#ifndef BSTMAP_H
+#define BSTMAP_H
 
 #include <iostream>
 
 namespace CS280 {
 
     template< typename KEY_TYPE, typename VALUE_TYPE >
-    class AVLmap {
+    class BSTmap {
 		public:
 			class Node {
 				public:
@@ -23,7 +23,7 @@ namespace CS280 {
 					Node*  increment(); // successor
 					Node*  decrement(); // predecessor
 					void   print(std::ostream& os ) const;
-				private:
+				protected:
                     KEY_TYPE    key;
 					VALUE_TYPE  value;
 					int         height,balance; // optional
@@ -32,90 +32,93 @@ namespace CS280 {
 					Node        *right;
 
 					friend class BSTmap;
+
+					template< typename K, typename V >
+					friend class AVLmap;
 			};
-        private:
-			struct AVLmap_iterator {
+        protected:
+			struct BSTmap_iterator {
 				private:
 					Node* p_node;
 				public:
-					AVLmap_iterator(Node* p = nullptr) : p_node(p) {}
-					AVLmap_iterator(const AVLmap_iterator&) = default;
-					AVLmap_iterator& operator=(const AVLmap_iterator& rhs);
-					AVLmap_iterator& operator++();
-					AVLmap_iterator operator++(int);
+					BSTmap_iterator(Node* p = nullptr) : p_node(p) {}
+					BSTmap_iterator(const BSTmap_iterator&) = default;
+					BSTmap_iterator& operator=(const BSTmap_iterator& rhs);
+					BSTmap_iterator& operator++();
+					BSTmap_iterator operator++(int);
                     Node& operator*();
 					Node* operator->();
-					bool operator!=(const AVLmap_iterator& rhs);
-                    bool operator==(const AVLmap_iterator& rhs);
-					friend class AVLmap;
+					bool operator!=(const BSTmap_iterator& rhs);
+                    bool operator==(const BSTmap_iterator& rhs);
+					friend class BSTmap;
 			};
-			struct AVLmap_iterator_const {
-				private:
+			struct BSTmap_iterator_const {
+				protected:
 					Node* p_node;
 				public:
-					AVLmap_iterator_const(Node* p=nullptr) : p_node(p) {}
-					AVLmap_iterator_const(const AVLmap_iterator_const&) = default;
-					AVLmap_iterator_const& operator=(const AVLmap_iterator_const& rhs);
-					AVLmap_iterator_const& operator++();
-					AVLmap_iterator_const operator++(int);
+					BSTmap_iterator_const(Node* p=nullptr) : p_node(p) {}
+					BSTmap_iterator_const(const BSTmap_iterator_const&) = default;
+					BSTmap_iterator_const& operator=(const BSTmap_iterator_const& rhs);
+					BSTmap_iterator_const& operator++();
+					BSTmap_iterator_const operator++(int);
                     Node const& operator*();
 					Node const* operator->();
-					bool operator!=(const AVLmap_iterator_const& rhs);
-					bool operator==(const AVLmap_iterator_const& rhs);
-					friend class AVLmap;
+					bool operator!=(const BSTmap_iterator_const& rhs);
+					bool operator==(const BSTmap_iterator_const& rhs);
+					friend class BSTmap;
 			};
-            // AVLmap implementation
+            // BSTmap implementation
 			Node* pRoot = nullptr;
             unsigned int size_ = 0;
-			// end iterators are same for all AVLmaps, thus static
-			// make AVLmap_iterator a friend
-			// to allow AVLmap_iterator to access end iterators 
-			static AVLmap_iterator end_it;
-			static AVLmap_iterator_const const_end_it;
+			// end iterators are same for all BSTmaps, thus static
+			// make BSTmap_iterator a friend
+			// to allow BSTmap_iterator to access end iterators 
+			static BSTmap_iterator end_it;
+			static BSTmap_iterator_const const_end_it;
 		public:
 			//BIG FOUR
-			AVLmap();
-			AVLmap(const AVLmap& rhs);
-			AVLmap& operator=(const AVLmap& rhs);
-			virtual ~AVLmap();
+			BSTmap();
+			BSTmap(const BSTmap& rhs);
+			BSTmap& operator=(const BSTmap& rhs);
+			virtual ~BSTmap();
 
             unsigned int size();
 
 			//value setter and getter
-			VALUE_TYPE& operator[](KEY_TYPE const& key);
+			virtual VALUE_TYPE& operator[](KEY_TYPE const& key);
 			//next method doesn't make sense
 			//because operator[] inserts a non-existing element
 			//which is not allowed on const maps
 			//VALUE_TYPE operator[](int key) const;
 
 			//standard names for iterator types
-			typedef AVLmap_iterator       iterator;
-			typedef AVLmap_iterator_const const_iterator;
+			typedef BSTmap_iterator       iterator;
+			typedef BSTmap_iterator_const const_iterator;
 
-			//AVLmap methods dealing with non-const iterator 
-			AVLmap_iterator begin();
-			AVLmap_iterator end();
-			AVLmap_iterator find(KEY_TYPE const& key);
-			void erase(AVLmap_iterator it);
+			//BSTmap methods dealing with non-const iterator 
+			BSTmap_iterator begin();
+			BSTmap_iterator end();
+			BSTmap_iterator find(KEY_TYPE const& key);
+			void erase(BSTmap_iterator it);
 
-			//AVLmap methods dealing with const iterator 
-			AVLmap_iterator_const begin() const;
-			AVLmap_iterator_const end() const;
-			AVLmap_iterator_const find(KEY_TYPE const& key) const;
+			//BSTmap methods dealing with const iterator 
+			BSTmap_iterator_const begin() const;
+			BSTmap_iterator_const end() const;
+			BSTmap_iterator_const find(KEY_TYPE const& key) const;
 			//do not need this one (why)
-			//AVLmap_iterator_const erase(AVLmap_iterator& it) const;
+			//BSTmap_iterator_const erase(BSTmap_iterator& it) const;
 
 			int getdepth(const Node* node) const;
 			char getedgesymbol(const Node* node) const;
 			void print(std::ostream& os, bool print_value = false) const;
 			//bool sanityCheck();
 
-			//inner class (AVLmap_iterator) doesn't have any special priveleges
-			//in accessing private data/methods of the outer class (AVLmap)
-			//so need friendship to allow AVLmap_iterator to access private "AVLmap::end_it"
+			//inner class (BSTmap_iterator) doesn't have any special priveleges
+			//in accessing private data/methods of the outer class (BSTmap)
+			//so need friendship to allow BSTmap_iterator to access private "BSTmap::end_it"
 			//BTW - same is true for outer class accessing inner class private data
-			friend class AVLmap_iterator;
-			friend class AVLmap_iterator_const;
+			friend class BSTmap_iterator;
+			friend class BSTmap_iterator_const;
 		private:
 			void del(Node* node);
 			Node* copy(Node* source_node, Node* parent_ptr);
@@ -123,7 +126,33 @@ namespace CS280 {
 
 	//notice that it doesn't need to be friend
     template< typename KEY_TYPE, typename VALUE_TYPE >
-	std::ostream& operator<<(std::ostream& os, AVLmap<KEY_TYPE, VALUE_TYPE> const& map);
+	std::ostream& operator<<(std::ostream& os, BSTmap<KEY_TYPE, VALUE_TYPE> const& map);
+
+
+	template<typename KEY_TYPE, typename VALUE_TYPE>
+	class AVLmap : public BSTmap<KEY_TYPE, VALUE_TYPE> {
+	public:
+		// Use base class types
+		typedef typename BSTmap<KEY_TYPE, VALUE_TYPE>::Node Node;
+
+		// Inherit constructors
+		AVLmap() : BSTmap<KEY_TYPE, VALUE_TYPE>() {}
+
+		// Override the index operator to include balancing
+		VALUE_TYPE& operator[](KEY_TYPE const& rhs) override;
+
+		// Override erase to include balancing
+		void Erase(typename BSTmap<KEY_TYPE, VALUE_TYPE>::iterator it);
+
+	private:
+		// AVL specific helpers
+		Node* RotateLeft(Node* n);
+		Node* RotateRight(Node* n);
+		void BalanceUp(Node* n);
+		int GetHeight(Node* n);
+		void UpdateNodeStats(Node* n);
+		int GetBalance(Node* n);
+	};
 }
 
 #include "avl-map.cpp"

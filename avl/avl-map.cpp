@@ -2,16 +2,16 @@
 
 // static data members
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::AVLmap_iterator        
-		CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::end_it        = CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::AVLmap_iterator(nullptr);
+typename CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::BSTmap_iterator        
+		CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::end_it        = CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::BSTmap_iterator(nullptr);
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::AVLmap_iterator_const  
-		CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::const_end_it  = CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::AVLmap_iterator_const(nullptr);
+typename CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::BSTmap_iterator_const  
+		CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::const_end_it  = CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::BSTmap_iterator_const(nullptr);
 
 //private functions
 template< typename KEY_TYPE, typename VALUE_TYPE >
-void CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::del(Node* node) {
+void CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::del(Node* node) {
 	if (node == nullptr) return;
 
 	// First, delete everything below this node
@@ -23,7 +23,7 @@ void CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::del(Node* node) {
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::copy(Node* source, Node* parent)
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::copy(Node* source, Node* parent)
 {
 	if (source == nullptr) return nullptr;
 
@@ -38,23 +38,23 @@ typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALU
 
 //for the node class
 template< typename KEY_TYPE, typename VALUE_TYPE >
-CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node::Node(KEY_TYPE k, VALUE_TYPE val, Node* p, int h, int b, Node* l, Node* r) :
+CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node::Node(KEY_TYPE k, VALUE_TYPE val, Node* p, int h, int b, Node* l, Node* r) :
 	key(k), value(val), height(h), balance(b), parent(p), left(l), right(r)
 {
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-KEY_TYPE const& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node::Key() const {
+KEY_TYPE const& CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node::Key() const {
 	return key;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-VALUE_TYPE& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node::Value() {
+VALUE_TYPE& CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node::Value() {
 	return value;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node::first() {
+typename CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::Node* CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node::first() {
 	Node* node = this;
 	while (node->left != nullptr) {
 		node = node->left;
@@ -63,7 +63,7 @@ typename CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALUE
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node::last() {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node::last() {
 	Node* node = this;
 	while (node->right != nullptr) {
 		node = node->right;
@@ -72,7 +72,7 @@ typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALU
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node::increment() {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node::increment() {
 	if (right != nullptr) {
 		return right->first();
 	}
@@ -86,7 +86,7 @@ typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALU
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node::decrement() {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node::decrement() {
 	if (left != nullptr) {
 		return left->last();
 	}
@@ -100,18 +100,18 @@ typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALU
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-void CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node::print(std::ostream& os) const {
+void CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node::print(std::ostream& os) const {
 	os << '(' << key << ',' << value << ')';
 }
 
-//start of AVLmap implementation
+//start of bstmap implementation
 //in implementation file 
 //method's name and return value have to be fully qualified with
-//all required namespace and class names (like CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::AVLmap)
+//all required namespace and class names (like CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::BSTmap)
 //but the argument list does not have to be:
 //function argument list automatically falls into the method's namespace (Koenig lookup)
 template< typename KEY_TYPE, typename VALUE_TYPE >
-CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::AVLmap(const AVLmap& rhs) {
+CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::BSTmap(const BSTmap& rhs) {
 	pRoot = nullptr;
 	size_ = 0;
 
@@ -123,33 +123,33 @@ CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::AVLmap(const AVLmap& rhs) {
 
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap() :
+CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap() :
 	pRoot(nullptr), size_(0)
 {
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::~AVLmap() {
+CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::~BSTmap() {
 	del(pRoot);
 	pRoot = nullptr;
 	size_ = 0;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-CS280::AVLmap<KEY_TYPE,VALUE_TYPE>& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::operator=(const AVLmap& rhs) {
-	AVLmap bst(rhs);
+CS280::BSTmap<KEY_TYPE,VALUE_TYPE>& CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::operator=(const BSTmap& rhs) {
+	BSTmap bst(rhs);
 	std::swap(pRoot, bst.pRoot);
 	std::swap(size_, bst.size_);
 	return *this;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-unsigned int CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::size() {
+unsigned int CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::size() {
 	return size_;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-VALUE_TYPE& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::operator[](KEY_TYPE const& rhs) {
+VALUE_TYPE& CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::operator[](KEY_TYPE const& rhs) {
 	if (pRoot == nullptr) {
 		size_++;
 		pRoot = new Node(rhs, VALUE_TYPE(), nullptr, 0, 0, nullptr, nullptr);
@@ -182,15 +182,15 @@ VALUE_TYPE& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::operator[](KEY_TYPE const& rhs)
 	return node->value;
 }
 
-//AVLmap_interator
+//bstmap_interator
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator::operator=(const AVLmap_iterator& rhs) {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator& CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator::operator=(const BSTmap_iterator& rhs) {
 	this->p_node = rhs.p_node;
 	return *this;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator::operator++() {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator& CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator::operator++() {
 	if (this->p_node != nullptr) {
 		this->p_node = this->p_node->increment();
 	}
@@ -198,47 +198,47 @@ typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator& CS280::AVLmap<KEY
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator::operator++(int) {
-	AVLmap_iterator temp = *this;
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator::operator++(int) {
+	BSTmap_iterator temp = *this;
 	++(*this);
 	return temp;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator::operator*() {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node& CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator::operator*() {
 	return *p_node;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator::operator->() {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator::operator->() {
 	return p_node;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-bool CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator::operator!=(const AVLmap_iterator& rhs) {
+bool CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator::operator!=(const BSTmap_iterator& rhs) {
 	return this->p_node != rhs.p_node;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-bool CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator::operator==(const AVLmap_iterator& rhs) {
+bool CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator::operator==(const BSTmap_iterator& rhs) {
 	return this->p_node == rhs.p_node;
 }
 
 ////////////////////////////////////////////////////////////
 // typename is used to help compiler to parse
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::AVLmap_iterator CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::begin() {
-	if (pRoot) return AVLmap<KEY_TYPE,VALUE_TYPE>::AVLmap_iterator(pRoot->first());
+typename CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::BSTmap_iterator CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::begin() {
+	if (pRoot) return BSTmap<KEY_TYPE,VALUE_TYPE>::BSTmap_iterator(pRoot->first());
 	else       return end_it;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::end() {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::end() {
 	return end_it;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::find(KEY_TYPE const& key) {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::find(KEY_TYPE const& key) {
 	Node* node = pRoot;
 	while (node != nullptr) {
 		if (key == node->key) {
@@ -255,7 +255,7 @@ typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator CS280::AVLmap<KEY_
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-void CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::erase(AVLmap_iterator it) {
+void CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::erase(BSTmap_iterator it) {
 	Node* node = it.p_node;
 	if (node == nullptr) {
 		return;
@@ -287,15 +287,15 @@ void CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::erase(AVLmap_iterator it) {
 	size_--;
 }
 
-//AVLmap_interator_const
+//bstmap_interator_const
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const::operator=(const AVLmap_iterator_const& rhs) {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const& CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const::operator=(const BSTmap_iterator_const& rhs) {
 	this->p_node = rhs.p_node;
 	return *this;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const::operator++() {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const& CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const::operator++() {
 	if (this->p_node != nullptr) {
 		this->p_node = this->p_node->increment();
 	}
@@ -303,34 +303,34 @@ typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const& CS280::AVLm
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const::operator++(int) {
-	AVLmap_iterator_const temp = *this;
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const::operator++(int) {
+	BSTmap_iterator_const temp = *this;
 	++(*this);
 	return temp;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node const& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const::operator*() {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node const& CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const::operator*() {
 	return *p_node;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node const* CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const::operator->() {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::Node const* CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const::operator->() {
 	return p_node;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-bool CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const::operator!=(const AVLmap_iterator_const& rhs) {
+bool CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const::operator!=(const BSTmap_iterator_const& rhs) {
 	return this->p_node != rhs.p_node;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-bool CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const::operator==(const AVLmap_iterator_const& rhs) {
+bool CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const::operator==(const BSTmap_iterator_const& rhs) {
 	return this->p_node == rhs.p_node;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::begin() const {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::begin() const {
 	if (pRoot == nullptr) {
 		return end();
 	}
@@ -338,12 +338,12 @@ typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const CS280::AVLma
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::end() const {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::end() const {
 	return const_end_it;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::find(KEY_TYPE const& key) const {
+typename CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::BSTmap_iterator_const CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::find(KEY_TYPE const& key) const {
 	Node* node = pRoot;
 	while (node != nullptr) {
 		if (key == node->key) {
@@ -361,7 +361,7 @@ typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::AVLmap_iterator_const CS280::AVLma
 
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-int CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::getdepth(const Node* node) const {
+int CS280::BSTmap<KEY_TYPE, VALUE_TYPE>::getdepth(const Node* node) const {
 	int depth = 0;
 	// Use a local pointer so we don't modify the argument
 	const Node* curr = node;
@@ -378,7 +378,7 @@ int CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::getdepth(const Node* node) const {
  * used in print_backwards_padded 
  */
 template< typename KEY_TYPE, typename VALUE_TYPE >
-char CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::getedgesymbol(const Node* node) const {
+char CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::getedgesymbol(const Node* node) const {
 	const Node* parent = node->parent;
 	if ( parent == nullptr) return '-';
 	else                 return ( parent->left == node)?'\\':'/';
@@ -389,15 +389,15 @@ char CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::getedgesymbol(const Node* node) const {
  * Left branch of the tree is at the bottom
  */
 template< typename KEY_TYPE, typename VALUE_TYPE >
-std::ostream& CS280::operator<<(std::ostream& os, AVLmap<KEY_TYPE,VALUE_TYPE> const& map) {
+std::ostream& CS280::operator<<(std::ostream& os, BSTmap<KEY_TYPE,VALUE_TYPE> const& map) {
 	map.print(os);
 	return os;
 }
 
 template< typename KEY_TYPE, typename VALUE_TYPE >
-void CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::print(std::ostream& os, bool print_value) const {
+void CS280::BSTmap<KEY_TYPE,VALUE_TYPE>::print(std::ostream& os, bool print_value) const {
 	if (pRoot) {
-		AVLmap<KEY_TYPE,VALUE_TYPE>::Node* b = pRoot->last();
+		BSTmap<KEY_TYPE,VALUE_TYPE>::Node* b = pRoot->last();
 		while ( b ) { 
 			int depth = getdepth(b);
 			int i;
@@ -434,3 +434,184 @@ void CS280::AVLmap<KEY_TYPE,VALUE_TYPE>::print(std::ostream& os, bool print_valu
 	std::printf("\n");
 }
 
+//AVL stuff
+template< typename KEY_TYPE, typename VALUE_TYPE >
+VALUE_TYPE& CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::operator[](KEY_TYPE const& rhs) {
+	Node* par = nullptr;
+	Node* node = this->pRoot;
+
+	while (node != nullptr) {
+		if (node->key < rhs) {
+			par = node;
+			node = node->right;
+		}
+		else if (node->key > rhs) {
+			par = node;
+			node = node->left;
+
+		}
+		else {
+			return node->value;
+		}
+	}
+
+	node = new Node(rhs, VALUE_TYPE(), par, 0, 0, nullptr, nullptr);
+	if (par == nullptr) {
+		this->pRoot = node;
+	}
+	else if (par->key < rhs) {
+		par->right = node;
+	}
+	else {
+		par->left = node;
+	}
+
+	this->size_++;
+	BalanceUp(par);
+
+	return node->value;
+}
+
+template< typename KEY_TYPE, typename VALUE_TYPE >
+void CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Erase(typename BSTmap<KEY_TYPE, VALUE_TYPE>::iterator it) {
+	Node* node = it.p_node;
+	if (node == nullptr) {
+		return;
+	}
+
+	Node* suc = (node->left == nullptr || node->right == nullptr) ? node : node->increment();
+	Node* temp = (suc->left != nullptr) ? suc->left : suc->right;
+	Node* par_suc = suc->parent;
+
+	if (temp != nullptr) {
+		temp->parent = suc->parent;
+	}
+
+	if (suc->parent == nullptr) {
+		this->pRoot = temp;
+	}
+	else if (suc == suc->parent->left) {
+		suc->parent->left = temp;
+	}
+	else {
+		suc->parent->right = temp;
+	}
+
+	if (suc != node) {
+		const_cast<KEY_TYPE&>(node->key) = suc->key;
+		node->value = suc->value;
+	}
+
+	delete suc;
+	this->size_--;
+
+	if (par_suc) {
+		balance_up(par_suc);
+	}
+	else if (this->pRoot) {
+		update_node_stats(this->pRoot);
+	}
+}
+
+template< typename KEY_TYPE, typename VALUE_TYPE >
+typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::RotateLeft(Node* n) {
+	Node* t = n->right;
+	Node* t2 = t->left;
+
+	t->left = n;
+	n->right = t2;
+
+	t->parent = n->parent;
+	n->parent = t;
+	if (t2) {
+		t2->parent = n;
+	}
+
+	UpdateNodeStats(n);
+	UpdateNodeStats(t);
+
+	return t;
+}
+
+template< typename KEY_TYPE, typename VALUE_TYPE >
+typename CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::Node* CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::RotateRight(Node* n) {
+	Node* t = n->left;
+	Node* t2 = t->right;
+
+	t->right = n;
+	n->left = t2;
+
+	t->parent = n->parent;
+	n->parent = t;
+	if (t2) {
+		t2->parent = n;
+	}
+
+	UpdateNodeStats(n);
+	UpdateNodeStats(t);
+
+	return t;
+}
+
+template< typename KEY_TYPE, typename VALUE_TYPE >
+void CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::BalanceUp(Node* n) {
+	while (n != nullptr) {
+		UpdateNodeStats(n);
+		int bal = GetBalance(n);
+		Node* sub = n;
+
+		if (bal > 1) {
+			if (GetBalance(n->left) < 0) {
+				n->left = RotateLeft(n->left);
+			}
+			sub = RotateRight(n);
+		}
+		else if (bal < -1) {
+			if (GetBalance(n->right) > 0) {
+				n->right = RotateRight(n->right);
+			}
+			sub = RotateLeft(n);
+		}
+
+		if (sub->parent == nullptr) {
+			this->pRoot = sub;
+		}
+		else {
+			if (sub->parent->left == n) {
+				sub->parent->left = sub;
+			}
+			else {
+				sub->parent->right = sub;
+			}
+		}
+
+		n = sub->parent;
+	}
+}
+
+template< typename KEY_TYPE, typename VALUE_TYPE >
+int CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::GetHeight(Node* n) {
+	return n ? n->height : -1;
+}
+
+template< typename KEY_TYPE, typename VALUE_TYPE >
+void CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::UpdateNodeStats(Node* n) {
+	if (n == nullptr) {
+		return;
+	}
+
+	int lh = GetHeight(n->left);
+	int rh = GetHeight(n->right);
+
+	n->height = 1 + std::max(lh, rh);
+	n->balance = lh - rh;
+}
+
+template< typename KEY_TYPE, typename VALUE_TYPE >
+int CS280::AVLmap<KEY_TYPE, VALUE_TYPE>::GetBalance(Node* n) {
+	if (n == nullptr) {
+		return 0;
+	}
+
+	return GetHeight(n->left) - GetHeight(n->right);
+}

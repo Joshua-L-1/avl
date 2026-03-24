@@ -76,7 +76,9 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClCompile Include="avl-map.cpp" />
+    <ClCompile Include="avl-map.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="driver.cpp" />
   </ItemGroup>
   <ItemGroup>
